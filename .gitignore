@@ -50,3 +50,11 @@ modules.order
 Module.symvers
 Mkfile.old
 dkms.conf
+
+# KiCad
+fp-info-cache
+*.lck
+moisture-backups
+
+# Apple crap
+.DS_Store
