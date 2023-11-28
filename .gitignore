@@ -56,5 +56,8 @@ fp-info-cache
 *.lck
 moisture-backups
 
+# IntelliJ
+.idea
+
 # Apple crap
 .DS_Store

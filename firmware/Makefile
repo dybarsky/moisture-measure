@@ -13,7 +13,7 @@ CFLAGS = -g -mmcu=msp430g2553
 INCFLAGS = -I/usr/local/include -I$(HEADERS)
 
 help:
-	@echo "Targets: clean, build, flash, all" 
+	@echo "Targets: clean, build, flash, all"
 
 all: clean build flash
 
@@ -50,17 +50,6 @@ $(OUT)/sensor.o: $(SOURCES)/sensor.c $(HEADERS)/sensor.h
 $(OUT)/timer.o: $(SOURCES)/timer.c $(HEADERS)/timer.h
 	@echo "Compile $<";\
 	$(CC) $(CFLAGS) $(INCFLAGS) -c $(SOURCES)/timer.c -o $(OUT)/timer.o
-	
+
 .SILENT: clean build-dir
 .PHONY: clean build-dir flash build
-
-
-
-
-
-
-
-
-
-
-

@@ -26,17 +26,17 @@ binary bits (port belongs): 22221111111______
 
 The mask is generated based on level value. There are 2 ways of creation:
 1. Shifting all 1 bits right by level filling with 0 and invert
-	111111111 -> 00011111 -> 11100000
+    111111111 -> 00011111 -> 11100000
 2. Shifing the lowest 1 bit cyclically right by level filling with 0
-	000000001 -> 00100000
+    000000001 -> 00100000
 
 The final values for PxOUT registers are calculated by
 applying binary mask on port digit with bits defining out pins.
 Since bits in binary mask belong to different ports, it should be separated:
 1. Aligning the highest 4 bits of binary mask to the right
-	2222111111_______ -> ____2222
+    2222111111_______ -> ____2222
 2. Aligning the lowest bits of binary mask to the right
-	2222111111_______ -> __111111
+    2222111111_______ -> __111111
 */
 
 #include <msp430g2553.h>
@@ -69,13 +69,13 @@ unsigned char port2 = PIN_0 | PIN_1 | PIN_2 | PIN_3;
 unsigned char port1 = PIN_4 | PIN_5 | PIN_6 | PIN_7 | PIN_8 | PIN_9;
 
 void configure_led() {
-	// configure out ports
+    // configure out ports
     P2DIR |= PIN_0 | PIN_1 | PIN_2 | PIN_3;
     P1DIR |= PIN_4 | PIN_5 | PIN_6 | PIN_7 | PIN_8 | PIN_9;
     // configure timer counter
     TA0CCR0 = PWM_FULL;
     TA0CCR1 = PWM_DUTY;
-	// enable timer interruptions
+    // enable timer interruptions
     TA0CCTL0 = CCIE;
     TA0CCTL1 = CCIE;
     // sum-main clock + freq divider 2 + up mode + init
@@ -83,31 +83,31 @@ void configure_led() {
 }
 
 void display_level(char level) {
-	// shift all 1 bits right filling with 0 and invert
-	binary = ~(0xFFFF >> level);
+    // shift all 1 bits right filling with 0 and invert
+    binary = ~(0xFFFF >> level);
 }
 
 void display_point(char level) {
-	// shift 1 right filling with 0
-	binary = 1 << (SIZE - level);	
+    // shift 1 right filling with 0
+    binary = 1 << (SIZE - level);
 }
 
 #pragma vector = TIMER0_A0_VECTOR
 __interrupt void on_timer0_ccr0(void) {
-	unsigned char mask1 = binary >> SHFT1;
-	unsigned char mask2 = binary >> SHFT2;
-	// turn on ports
-	P1OUT |= port1 & mask1;
-	P2OUT |= port2 & mask2;
+    unsigned char mask1 = binary >> SHFT1;
+    unsigned char mask2 = binary >> SHFT2;
+    // turn on ports
+    P1OUT |= port1 & mask1;
+    P2OUT |= port2 & mask2;
     // reset interruption flag
     TA0CCTL0 &= ~CCIFG;
 }
 
 #pragma vector = TIMER0_A1_VECTOR
 __interrupt void on_timer0_ccr1(void) {
-	// turn off ports
-	P1OUT &= ~port1;
-	P2OUT &= ~port2;
+    // turn off ports
+    P1OUT &= ~port1;
+    P2OUT &= ~port2;
     // reset interruption flag
     TA0CCTL1 &= ~CCIFG;
 }
