@@ -1,0 +1,25 @@
+name: CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+  
+    - name: install toolchain
+      run: |
+        sudo apt-get install binutils-msp430 
+        sudo apt-get install gcc-msp430
+    
+    - name: checkout repo
+      uses: actions/checkout@v3
+    
+    - name: build firmware
+      run: |
+        cd firmware
+        make build
