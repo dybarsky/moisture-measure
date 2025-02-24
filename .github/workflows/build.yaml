@@ -1,0 +1,26 @@
+# action.yml
+name: 'Build firmware'
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Build Docker image
+        run: |
+          docker build -t msp430-bikelight:v1 firmware
+
+      - name: Run Docker container
+        run: |
+          docker run msp430-bikelight:v1
